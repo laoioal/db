@@ -705,17 +705,26 @@ ORDER BY
 ;
 
 /*
-    문제 4]
+    문제 4] 문자열 처리함수를 사용해서 해결하세요
         사원이름 중 'a'가 존재하지 않는 사원의 정보를 조회하세요
 */
 SELECT
-    enamem sal
+    empno 사원번호, ename 사원이름, job 사원직급, hiredate 입사일, sal 사원급여
 FROM
 	emp
 WHERE
-    ename NOT LIKE '%A%'
+    INSTR(ename, 'a') = 0 -- 데이터베이스에서는 위치값이 1부터 시작한다.
 ;
 
+SELECT
+    empno 사원번호, ename 사원이름, job 사원직급, hiredate 입사일, sal 사원급여
+FROM
+	emp
+WHERE
+    ename NOT LIKE '%a%'
+;
+
+SELECT INSTR('JENNIE', 'j') FROM dual;
 /*
     문제 5]
         사원이름 중에서 뒤 2글자만 남기고
@@ -743,8 +752,33 @@ SUBSTR(RPAD(SUBSTR('jennie@githrd.com', 3, 1), (instr('jennie@githrd.com', '@') 
 ), RPAD(SUBSTR('jennie@githrd.com', INSTR('jennie@githrd.com', '@'), 1), LENGTH(SUBSTR('jennie@githrd.com' ,INSTR('jennie@githrd.com', '@') + 1, (INSTR('jennie@githrd.com', '.') - (INSTR('jennie@githrd.com', '@'))))), '*')) , SUBSTR('jennie@githrd.com', -4, 4))
 
 FROM
-	emp
+	dual
 ;
+
+SELECT
+    CONCAT(
+        CONCAT(
+            RPAD(
+                LPAD(
+                    SUBSTR('jennie@githrd.com', 3, 1), 3, '*'),
+                        INSTR('jennie@githrd.com', '@') -1, '*'), '@'),
+    LPAD(
+        SUBSTR(
+            'jennie@githrd.com', 
+            INSTR('jennie@githrd.com', '.')
+            ),
+        LENGTH(
+            SUBSTR(
+            'jennie@githrd.com', 
+            INSTR('jennie@githrd.com', '@') + 1)
+            ),
+            '*')
+            ) 제니메일
+    
+FROM
+    dual
+;
+
 /*
     문제 1 ]
         사원의 이름, 직급, 입사일, 급여를 조회하세요.
@@ -794,9 +828,13 @@ ORDER BY
         같은 직급이면 입사일 순서대로 출력되도록 하세요.
 */
 SELECT
-
+    ename, job, hiredate
 FROM
 	emp
+WHERE
+    ename LIKE '%S'
+ORDER BY
+    hiredate ASC
 ;
 /*
     문제 5 ] NVL() 5[1]
@@ -806,7 +844,12 @@ FROM
         단, 소수이상 2째 자리에서 반올림하여 출력하세요.
 */
 SELECT
-
+    ename, sal, comm, round(NVL(comm, 100) * 1.27, -2), NVL(comm, 100) * 1.27
+FROM
+	emp
+;
+SELECT
+    ename, sal, comm, round(NVL(comm * 1.27, 100 * 1.27), -2)
 FROM
 	emp
 ;
@@ -818,7 +861,13 @@ FROM
         그리고 커미션이 없는 사람은 0으로 가정하여 계산하도록 하세요.
 */
 SELECT
+    ename, job, sal, comm, sal * 1.15 + NVL(comm, 0), TRUNC(sal * 1.15 + NVL(comm, 0), -1)
+FROM
+	emp
+;
 
+SELECT
+    ename, job, TRUNC(NVL(sal * 1.15 + comm, sal * 1.15), -1)
 FROM
 	emp
 ;
@@ -828,8 +877,10 @@ FROM
             사원이름, 직급, 급여를 조회하세요.
 */
 SELECT
-
+    ename, job, sal
 FROM
 	emp
+WHERE
+    mod(sal, 100) = 0
 ;
 
