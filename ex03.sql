@@ -122,12 +122,34 @@ FROM
 */
 
 SELECT
-	   ename
+	   ename 사원이름, sal 급여, hiredate 입사일,
+       CASE WHEN FLOOR(next_DAY(hiredate, '일') - hiredate) = 7 THEN '일요일'
+                WHEN next_DAY(hiredate, '일') - hiredate = 6 THEN '월요일'
+                WHEN next_DAY(hiredate, '일') - hiredate = 5 THEN '화요일'
+                WHEN next_DAY(hiredate, '일') - hiredate = 4 THEN '수요일'
+                WHEN next_DAY(hiredate, '일') - hiredate = 3 THEN '목요일'
+                WHEN next_DAY(hiredate, '일') - hiredate = 2 THEN '금요일'
+                ELSE '토요일'
+                end 입사요일,
+                
+       CASE WHEN FLOOR(next_DAY(hiredate, '일') - hiredate) = 7 THEN sal * 1.2
+                WHEN next_DAY(hiredate, '일') - hiredate = 1 THEN sal * 1.2
+                ELSE sal * 1.1
+                end 지급급여,
+                to_char(hiredate, 'day') 입사요일
+                
    
 FROM
     emp
-WHERE
+;
 
+SELECT
+    ename, sal, TO_CHAR(hiredate, 'YYYY/MM/DD') 입사일, TO_CHAR(hiredate,'DY') 요일, 
+    DECODE(TO_CHAR(hiredate,'DY'), '토', sal * 1.2,
+                                    '일', sal * 1.2,
+                                    sal * 1.1) 지급급여
+FROM
+    emp
 ;
 /*
     문제 7 ]
