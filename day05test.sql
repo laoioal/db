@@ -53,3 +53,44 @@ INSERT INTO
 );
 commit;
 rollback;
+
+
+CREATE TABLE emp1-- CREATE는 DDL명령, DDL명령이 실행되면 기존 작업 자동 적용(commit)된다.
+AS 
+    SELECT
+        *
+    FROM
+        emp
+;
+
+UPDATE
+    emp1
+SET
+    job = '사장'
+;
+
+
+rollback;
+
+UPDATE
+    emp1
+SET
+    sal = 1500
+WHERE
+    ename = 'SMITH'
+;
+
+UPDATE
+    emp1
+SET
+    (job, sal, comm) = (SELECT
+                            job, sal, comm
+                        FROM
+                            emp
+                        WHERE
+                            ename = 'KING'
+                            )
+WHERE
+    ename = 'SMITH'
+;
+drop table emp1;

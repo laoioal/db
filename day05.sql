@@ -162,7 +162,7 @@ VALUES(
 INSERT INTO
     emp1(empno, ename, job, mgr, hiredate, sal, comm, deptno)
 VALUES(
-    1005, '둘리', 
+    1005, '둘리'
 );
 
 -- *** 다른 테이블의 데이터를 복사해서 입력하는 방법
@@ -251,7 +251,7 @@ commit;
         ;
 */
 
--- 로제의 직급과 급여를 emp 테이블의 SMITH사원의 데이터르 복사해서 수정하세요
+-- 로제의 직급과 급여를 emp 테이블의 SMITH사원의 데이터를 복사해서 수정하세요
 UPDATE
     emp2
 SET
