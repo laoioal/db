@@ -64,6 +64,9 @@ CREATE TABLE avatar(
     savename VARCHAR2(50 CHAR),
     dir VARCHAR2(100 CHAR),
     len NUMBER,
+    gen CHAR(1)
+        CONSTRAINT AVT_GEN_CK CHECK (gen IN('F', 'M', 'N'))
+        CONSTRAINT AVT_GEN_NN NOT NULL,
     adate DATE DEFAULT sysdate,
     isshow CHAR(1) DEFAULT 'Y',
     CONSTRAINT AVT_NO_PK PRIMARY KEY(ano),
@@ -71,6 +74,7 @@ CREATE TABLE avatar(
     CONSTRAINT AVT_SHOW_CK CHECK(isshow IN('Y', 'N'))
 
 );
+drop table avatar cascade CONSTRAINTS;
 
 
 -- NOT NULL 제약조건 수정
