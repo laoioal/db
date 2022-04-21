@@ -1,0 +1,93 @@
+SQL 활용
+문제1.
+CREATE TABLE MEMBER(
+no NUMBER(4)
+    CONSTRAINT MEMBER_NO_PK PRIMARY KEY,
+name VARCHAR2(6 CHAR)
+    CONSTRAINT MEMBER_NAME_NN NOT NULL,
+id VARCHAR2(8 CHAR)
+    CONSTRAINT MEMBER_ID_UK UNIQUE
+    CONSTRAINT MEMBER_ID_NN NOT NULL,
+pw VARCHAR2(8 CHAR)
+    CONSTRAINT MEMBER_PW_NN NOT NULL,
+isshow CHAR(1) DEFAULT 'N'
+    CONSTRAINT MEMBER_ISSHOW_NN NOT NULL
+    CONSTRAINT MEMBER_ISSHOW_CK CHECK(isshow in('Y', 'N'))
+);
+
+문제2.
+ALTER TABLE board
+MODIFY body CONSTRAINT MEMBER_BODY_NN NOT NULL;
+
+문제3.
+SELECT
+    DISTINCT(deptno) 부서번호
+FROM
+    emp
+;
+
+문제4.
+SELECT
+    empno 사원번호, ename 사원이름, comm 이전커미션, NVL(comm + 100, 50) 지급커미션
+FROM
+    emp
+;
+
+문제5.
+SELECT
+    empno 사원번호, RPAD(SUBSTR(ename, 1, 2), LENGTH(ename), '*') 사원이름, job 직급, MONTHS_BETWEEN(SYSDATE,hiredate) 근무개월수
+FROM
+    emp
+;
+
+문제6.
+SELECT
+    count(comm) "comm 받는 사람"
+FROM
+    emp
+;
+
+문제7.
+SELECT
+    empno 사원번호, ename 사원이름, sal 급여, sal - max "최대급여와의 차이", max 부서최대급여, avg 부서평균급여
+FROM
+    emp, (SELECT
+            deptno d, MAX(sal) max, AVG(sal) avg
+            FROM
+                emp
+            GROUP BY
+                deptno
+            )
+WHERE
+    deptno = d
+;
+
+문제8.
+SELECT
+    empno 사원번호, ename 사원이름, grade 급여등급, dname 부서이름, loc 부서위치
+FROM
+    emp e, dept d, salgrade s
+WHERE
+    e.deptno = d.deptno
+    AND e.sal BETWEEN losal AND hisal
+;
+
+문제9.
+CREATE OR REPLACE VIEW emp_dept
+AS
+    (SELECT
+        empno 사원번호, ename 사원이름, e.deptno 부서번호, dname 부서이름
+    FROM
+        scott.emp e, scott.dept d
+    WHERE
+        e.deptno = d.deptno
+    )
+    ;
+
+문제10.
+CREATE SEQUENCE memb_seq
+    start with 1000
+    INCREMENT BY 1
+    NOCYCLE
+    NOCACHE
+;
