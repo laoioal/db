@@ -21,7 +21,7 @@ MODIFY body CONSTRAINT MEMBER_BODY_NN NOT NULL;
 
 문제3.
 SELECT
-    DISTINCT(deptno) 부서번호
+    distinct deptno 부서번호
 FROM
     emp
 ;
@@ -35,7 +35,7 @@ FROM
 
 문제5.
 SELECT
-    empno 사원번호, RPAD(SUBSTR(ename, 1, 2), LENGTH(ename), '*') 사원이름, job 직급, MONTHS_BETWEEN(SYSDATE,hiredate) 근무개월수
+    empno 사원번호, RPAD(SUBSTR(ename, 1, 2), LENGTH(ename), '*') 사원이름, job 직급, FLOOR(MONTHS_BETWEEN(SYSDATE,hiredate)) 근무개월수
 FROM
     emp
 ;
@@ -76,7 +76,7 @@ WHERE
 CREATE OR REPLACE VIEW emp_dept
 AS
     (SELECT
-        empno 사원번호, ename 사원이름, e.deptno 부서번호, dname 부서이름
+        empno, ename, e.deptno, dname
     FROM
         scott.emp e, scott.dept d
     WHERE
